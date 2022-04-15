@@ -25,6 +25,9 @@ struct BResource {
   }
   BResource(const BResource& other) = delete;
   BResource& operator=(const BResource& other) = delete;
+  ~BResource() {
+    std::cout << "Delete BResource " << id_ << "\n";
+  }
 
   void* allocate(std::size_t n) {
     void* p = std::malloc(n);
@@ -84,6 +87,11 @@ struct BAllocator {
         << " with BResource " << res_->id_ << "\n";
     ++BAllocatorID;
     type_reg_TU<T, sizeof(T), U, sizeof(U)>();
+  }
+
+  ~BAllocator() {
+    std::cout << "Delete BAllocator " << id_
+        << " with BResource " << res_->id_ << "\n";
   }
 
   T* allocate(std::size_t n) {
