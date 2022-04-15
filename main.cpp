@@ -4,8 +4,14 @@
 #include <memory>
 #include <set>
 
-template<typename T, std::size_t size>
-void type_reg() {
+template <typename T, std::size_t ts>
+void type_reg_T() {
+  return;
+}
+
+template <typename T, std::size_t ts,
+    typename U, std::size_t us>
+void type_reg_TU() {
   return;
 }
 
@@ -39,21 +45,24 @@ struct BAllocator {
 
   BAllocator() :
       ts_{sizeof(T)},
+      us_{},
       res_{std::make_shared<BResource>()} {
-    type_reg<T, sizeof(T)>();
+    type_reg_T<T, sizeof(T)>();
   }
 
   BAllocator(const BAllocator& other) :
       ts_{other.ts_},
+      us_{other.us_},
       res_{other.res_} {
-    type_reg<T, sizeof(T)>();
+    type_reg_T<T, sizeof(T)>();
   }
 
   template <typename U>
   BAllocator(const BAllocator<U>& other) :
-      ts_{other.ts_},
-      res_{other.res_} {
-    type_reg<U, sizeof(U)>();
+      ts_{sizeof(T)},
+      us_{sizeof(U)},
+      res_{std::make_shared<BResource>()} {
+    type_reg_TU<T, sizeof(T), U, sizeof(U)>();
   }
 
   T* allocate(std::size_t n) {
@@ -68,17 +77,18 @@ struct BAllocator {
 
   template <typename U>
   bool operator==(const BAllocator<U>& other) {
-    type_reg<U, sizeof(U)>();
+    type_reg_TU<T, sizeof(T), U, sizeof(U)>();
     return res_ == other.res_;
   }
 
   template <typename U>
   bool operator!=(const BAllocator<U>& other) {
-    type_reg<U, sizeof(U)>();
+    type_reg_TU<T, sizeof(T), U, sizeof(U)>();
     return !(*this == other);
   }
 
   const std::size_t ts_;
+  const std::size_t us_;
   std::shared_ptr<BResource> res_;
 };
 

@@ -7,3 +7,6 @@ all: main
 main: $(SRC)
 	$(CXX) $(CXXFLAGS) $(SRC)
 
+clean:
+	rm -f -r -v a.out*
+
