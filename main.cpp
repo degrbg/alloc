@@ -20,32 +20,30 @@ void type_reg_TU() {
 
 struct BResource {
   BResource() : id_{BResourceID} {
-    std::cout << "  Construct BResource " << id_ << "\n";
+    std::cout << "Construct BResource " << id_ << "\n";
     ++BResourceID;
   }
   BResource(const BResource& other) = delete;
   BResource& operator=(const BResource& other) = delete;
   ~BResource() {
-    std::cout << "  Destruct BResource " << id_ << "\n";
+    std::cout << "Destruct BResource " << id_ << "\n";
   }
 
   void* allocate(std::size_t n) {
     void* p = std::malloc(n);
-    std::cout << "  BResource " << id_ << " allocate() "
+    std::cout << "BResource " << id_ << " allocate() "
         << n << " bytes at " << p << "\n";
     ptrs_.insert(p);
     return p;
   }
 
   void deallocate(void* p) {
-    std::cout << "  BResource " << id_ << " deallocate() at " << p << "\n";
+    std::cout << "BResource " << id_ << " deallocate() at " << p << "\n";
     const auto it = ptrs_.find(p);
     if (it != ptrs_.end()) {
       ptrs_.erase(it);
     } else {
-      std::cout
-          << "  BResource::deallocate(): p not found in BResource "
-          << id_ << "\n";
+      std::cout << "  p not found\n";
     }
     std::free(p);
   }
