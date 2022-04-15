@@ -73,6 +73,9 @@ struct BAllocator {
   }
 
   void deallocate(T* tp, std::size_t n) {
+    std::cout << "BAllocator::deallocate() "
+        << n << " chunk(s) of size " << ts_ << " at "
+        << tp << "\n";
     void* p = static_cast<void*>(tp);
     res_->deallocate(p);
   }
