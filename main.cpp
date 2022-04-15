@@ -20,13 +20,13 @@ void type_reg_TU() {
 
 struct BResource {
   BResource() : id_{BResourceID} {
-    std::cout << "New BResource " << id_ << "\n";
+    std::cout << "Construct BResource " << id_ << "\n";
     ++BResourceID;
   }
   BResource(const BResource& other) = delete;
   BResource& operator=(const BResource& other) = delete;
   ~BResource() {
-    std::cout << "Delete BResource " << id_ << "\n";
+    std::cout << "Destruct BResource " << id_ << "\n";
   }
 
   void* allocate(std::size_t n) {
@@ -60,7 +60,7 @@ struct BAllocator {
       ts_{sizeof(T)},
       us_{},
       res_{std::make_shared<BResource>()} {
-    std::cout << "New BAllocator " << id_
+    std::cout << "Construct BAllocator " << id_
         << " with BResource " << res_->id_ << "\n";
     ++BAllocatorID;
     type_reg_T<T, sizeof(T)>();
@@ -71,8 +71,10 @@ struct BAllocator {
       ts_{other.ts_},
       us_{other.us_},
       res_{other.res_} {
-    std::cout << "New BAllocator " << id_
+    std::cout << "Copy construct BAllocator " << id_
         << " with BResource " << res_->id_ << "\n";
+    std::cout << "  from BAllocator " << other.id_
+        << " with BResource " << other.res_->id_ << "\n";
     ++BAllocatorID;
     type_reg_T<T, sizeof(T)>();
   }
@@ -83,14 +85,16 @@ struct BAllocator {
       ts_{sizeof(T)},
       us_{sizeof(U)},
       res_{std::make_shared<BResource>()} {
-    std::cout << "New BAllocator " << id_
+    std::cout << "Convert copy construct BAllocator " << id_
         << " with BResource " << res_->id_ << "\n";
+    std::cout << "  from BAllocator " << other.id_
+        << " with BResource " << other.res_->id_ << "\n";
     ++BAllocatorID;
     type_reg_TU<T, sizeof(T), U, sizeof(U)>();
   }
 
   ~BAllocator() {
-    std::cout << "Delete BAllocator " << id_
+    std::cout << "Destruct BAllocator " << id_
         << " with BResource " << res_->id_ << "\n";
   }
 
