@@ -137,6 +137,8 @@ using BMultimap = std::multimap<Key,
 
 int main()
 {
+  std::cout << "main() begin\n";
+
   BMultimap<int, int> bm;
 
   std::cout << "bm.size() = " << bm.size() << "\n";
@@ -149,4 +151,6 @@ int main()
   bm.clear();
 
   std::cout << "bm.size() = " << bm.size() << "\n";
+
+  std::cout << "main() end\n";
 }
