@@ -66,6 +66,8 @@ struct BAllocator {
   }
 
   T* allocate(std::size_t n) {
+    std::cout << "BAllocator::allocate() "
+        << n << " chunk(s) of size " << ts_ << "\n";
     void* p = res_->allocate(ts_ * n);
     return static_cast<T*>(p);
   }
