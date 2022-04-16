@@ -140,20 +140,22 @@ using BMultimap = std::multimap<Key,
 
 int main()
 {
-  std::cout << "main() begin\n";
+  std::cout << "Block starting\n";
 
-  BMultimap<int, int> bm;
+  {
+    BMultimap<int, int> bm;
 
-  std::cout << "bm.size() = " << bm.size() << "\n";
+    std::cout << "bm.size() = " << bm.size() << "\n";
 
-  bm.insert(std::pair<int, int>(0, 1));
-  bm.insert(std::pair<int, int>(2, 3));
+    bm.insert(std::pair<int, int>(0, 1));
+    bm.insert(std::pair<int, int>(2, 3));
 
-  std::cout << "bm.size() = " << bm.size() << "\n";
+    std::cout << "bm.size() = " << bm.size() << "\n";
 
-  bm.clear();
+    bm.clear();
 
-  std::cout << "bm.size() = " << bm.size() << "\n";
+    std::cout << "bm.size() = " << bm.size() << "\n";
+  }
 
-  std::cout << "main() end\n";
+  std::cout << "Block ended\n";
 }
