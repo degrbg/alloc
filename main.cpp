@@ -61,7 +61,7 @@ struct BAllocator {
       ts_{sizeof(T)},
       res_{std::make_shared<BResource>()} {
     std::cout << "Construct BAllocator " << id_
-        << " with BResource " << res_->id_ << "\n";
+        << " (size " << ts_ << ", BResource " << res_->id_ << ")\n";
     ++BAllocatorID;
     type_reg_T<T, sizeof(T)>();
   }
@@ -71,9 +71,11 @@ struct BAllocator {
       ts_{other.ts_},
       res_{other.res_} {
     std::cout << "Copy construct BAllocator " << id_
-        << " with BResource " << res_->id_ << "\n";
+        << " (size " << ts_
+        << ", BResource " << res_->id_ << ")\n";
     std::cout << "  from BAllocator " << other.id_
-        << " with BResource " << other.res_->id_ << "\n";
+        << " (size " << other.ts_
+        << ", BResource " << other.res_->id_ << ")\n";
     ++BAllocatorID;
     type_reg_T<T, sizeof(T)>();
   }
@@ -84,21 +86,23 @@ struct BAllocator {
       ts_{sizeof(T)},
       res_{std::make_shared<BResource>()} {
     std::cout << "Convert copy construct BAllocator " << id_
-        << " with BResource " << res_->id_ << "\n";
+        << " (size " << ts_
+        << ", BResource " << res_->id_ << ")\n";
     std::cout << "  from BAllocator " << other.id_
-        << " with BResource " << other.res_->id_ << "\n";
+        << " (size " << other.ts_
+        << ", BResource " << other.res_->id_ << ")\n";
     ++BAllocatorID;
     type_reg_TU<T, sizeof(T), U, sizeof(U)>();
   }
 
   ~BAllocator() {
     std::cout << "Destruct BAllocator " << id_
-        << " with BResource " << res_->id_ << "\n";
+        << " (size " << ts_ << ", BResource " << res_->id_ << ")\n";
   }
 
   T* allocate(std::size_t n) {
     std::cout << "BAllocator " << id_ << " allocate() "
-        << n << " chunk(s) of size " << ts_ << "\n";
+        << n << " chunk(s)\n";
     void* p = res_->allocate(ts_ * n);
     auto tp = static_cast<T*>(p);
     return tp;
@@ -106,7 +110,7 @@ struct BAllocator {
 
   void deallocate(T* tp, std::size_t n) {
     std::cout << "BAllocator " << id_ << " deallocate() "
-        << n << " chunk(s) of size " << ts_ << "\n";
+        << n << " chunk(s)\n";
     void* p = static_cast<void*>(tp);
     res_->deallocate(p);
   }
