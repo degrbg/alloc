@@ -59,7 +59,6 @@ struct BAllocator {
   BAllocator() :
       id_{BAllocatorID},
       ts_{sizeof(T)},
-      us_{},
       res_{std::make_shared<BResource>()} {
     std::cout << "Construct BAllocator " << id_
         << " with BResource " << res_->id_ << "\n";
@@ -70,7 +69,6 @@ struct BAllocator {
   BAllocator(const BAllocator& other) :
       id_{BAllocatorID},
       ts_{other.ts_},
-      us_{other.us_},
       res_{other.res_} {
     std::cout << "Copy construct BAllocator " << id_
         << " with BResource " << res_->id_ << "\n";
@@ -84,7 +82,6 @@ struct BAllocator {
   BAllocator(const BAllocator<U>& other) :
       id_{BAllocatorID},
       ts_{sizeof(T)},
-      us_{sizeof(U)},
       res_{std::make_shared<BResource>()} {
     std::cout << "Convert copy construct BAllocator " << id_
         << " with BResource " << res_->id_ << "\n";
@@ -128,7 +125,6 @@ struct BAllocator {
 
   const int id_;
   const std::size_t ts_;
-  const std::size_t us_;
   std::shared_ptr<BResource> res_;
 };
 
