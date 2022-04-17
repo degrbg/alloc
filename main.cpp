@@ -3,6 +3,7 @@
 #include <map>
 #include <memory>
 #include <set>
+#include <vector>
 
 int BResourceID = 0;
 int BAllocatorID = 0;
@@ -138,10 +139,12 @@ using BMultimap = std::multimap<Key,
     std::less<Key>,
     BAllocator<std::pair<const Key, T>>>;
 
+template <typename T>
+using BVector = std::vector<T, BAllocator<T>>;
+
 int main()
 {
   std::cout << "Block starting\n";
-
   {
     BMultimap<int, int> bm;
 
@@ -156,6 +159,27 @@ int main()
 
     std::cout << "bm.size() = " << bm.size() << "\n";
   }
+  std::cout << "Block ended\n";
 
+  std::cout << "Block starting\n";
+  {
+    BVector<int> bv;
+
+    std::cout << "bv.size() = " << bv.size() << "\n";
+
+    std::cout << "bv.push_back()\n";
+    bv.push_back(0);
+    std::cout << "bv.push_back()\n";
+    bv.push_back(1);
+
+    std::cout << "bv.size() = " << bv.size() << "\n";
+
+    std::cout << "bv.clear()\n";
+    bv.clear();
+    std::cout << "bv.shrink_to_fit()\n";
+    bv.shrink_to_fit();
+
+    std::cout << "bv.size() = " << bv.size() << "\n";
+  }
   std::cout << "Block ended\n";
 }
